@@ -1,0 +1,63 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+
+  <!--全局参数-->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath:applicationContext.xml</param-value>
+  </context-param>
+
+
+  <!--配置过滤器-->
+  <filter>
+    <filter-name>myfilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <!--要用它就要指定编码-->
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>utf-8</param-value>
+    </init-param>
+    <!--加强参数.可配可不配  表示:无论客户端请求是否包含了编码,都用过滤器里的编码来解析请求-->
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>myfilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+
+  <!--Spring容器的监听 -->
+  <!--初始化Spring容器 : 服务器启动时,加载所有的bean,若有异常,启动就会报错,就可发现异常的部分-->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    <!--初始化就要去读取内容  要去加载配置文件-->
+    <!--加载配置文件 ,读取全局属性 contextConfigLocation : 会自动去读取上面的全局对应的代码-->
+  </listener>
+
+
+  <!--核心  :  配置前端控制器 即中央处理器-->
+  <servlet>
+    <servlet-name>springmvc</servlet-name>
+    <!--DispatcherServlet 只针对Springmvc-->
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <!--读取springmvc的配置文件-->
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:applicationContext.xml</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>springmvc</servlet-name>
+    <url-pattern>*.do</url-pattern>  <!--即拦截以点do为结尾的所有请求-->
+  </servlet-mapping>
+
+
+
+</web-app>
